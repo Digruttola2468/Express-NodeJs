@@ -1,30 +1,34 @@
-const express = require('express')
+const express = require("express");
 const app = express();
 const PORT = 3000;
 
-//CRUD - Create , Read, Update, Delete
-
-app.get('/products', (req, res) => {
-    res.send('Lista de productos');
+//Obtenemos un Texto
+app.get("/", (req, res) => {
+  res.send("Hello world");
 });
 
-app.post('/products', (req, res) => {
-    res.send('Creando productos');
+//Obtenemos un archivo
+app.get("/myarchivo", (req, res) => {
+  res.sendFile("./java.png", {
+    root: __dirname,
+  });
 });
 
-app.put('/products', (req, res) => {
-    res.send('Actualizando un producto');
+//Obtener un dato de manera con un Objeto JSON
+app.get("/user", (req, res) => {
+  res.json({
+    name: "fazt",
+    lastName: "Digruttola",
+    age: 40,
+    points: [3, 4, 21],
+  });
 });
 
-app.delete('/products', (req, res) => {
-    res.send('Eliminando producto');
-});
-
-app.patch('/products', (req, res) => {
-    res.send('actualizando una parte del producto');
-});
-
-
+//isAlive se usa generalmenta para saber si el servidor esta funcionando
+app.get('/isAlive', (req,res) => {
+    //204 -> no muestra ningun contenido para mostrar que se obtuvo con exito
+    res.sendStatus(204);
+})
 
 app.listen(PORT);
 console.log(`Server on port ${PORT}`);
