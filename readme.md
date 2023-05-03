@@ -189,3 +189,25 @@ app.get('/nombre/:nombre/age/:age', (req,res) => {
   res.send(`Bienvenido ${nombre} , NO eres mayor de edad porque tenes ${age} y ni llegas a los 18😡`);
 });
 ```
+
+## Queries
+
+Los queries son los que le da informacion adicionar al servidor para realizar operaciones, se usa generalemente para navegar en la pagina
+
+Un ejemplo para colocar queries seria la siguiente `http://localhost:3000/producto?page=20&category=ropa` , el queri comienda despues del **?** colocando luego las variables del mismo, `page=20` depende como esta diseñado podemos obtener 20 productos de un E-Commerse, con el **&** nos permite agregar otra variable , en este caso `category=ropa` donde nos obtendra 20 productos de la categoria ropa 
+
+```JS
+app.get('/search', (req,res) => {
+  if (req.query.q === 'java') {
+    return res.send('Lista de libros de java')
+  }
+
+  res.send('Pagina normal');
+});
+```
+
+Cuando el query se repite , express crea un objeto del nombre correspondiente y los datos en una array.
+
+Un ejemplo de esto es que si ponemos `/search?user=ivan&user=digruttola` Express nos devuelve un objetivo JSON con los siguientes datos: `{user: ['ivan','digruttola']}`
+
+##
