@@ -2,17 +2,24 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 
-//Esta linea de codigo es para que express entienda los tipos de datos
-//Es importante colocar esta linea de codigo antes de colocar los Routing
-//Ya que express pasa por estas funciones para poder interpretarlos 
+//
+app.get('/hello/:username', (req,res) => {
+  console.log(req.params);
+  res.send(`Hello ${req.params.username}`);
+});
 
-app.use(express.text()) //Entiende el tipo de dato TEXT que le enviamos en el request
-app.use(express.json()) //Entiende los objetivos JSON que le enviamos en los request
-app.use(express.urlencoded({extended: false})) //Para entender el codigo de un formulario (Form-Encode) HTML
+app.get('/add/:x/:y', (req,res) => {
+  const {x, y} = req.params
+  res.send(`Suma: ${ parseInt(x) + parseInt(y) }`);
+});
 
-app.post('/user', (req,res) => {
-  console.log(req.body);
-  res.send("Nuevo usuario creado")
+app.get('/nombre/:nombre/age/:age', (req,res) => {
+  const {nombre, age} = req.params
+
+  if(parseInt(age) >= 18 ) 
+    return res.send(`Bienvenido ${nombre} , eres mayor de edad porque tenes ${age}`);
+  
+  res.send(`Bienvenido ${nombre} , NO eres mayor de edad porque tenes ${age} y ni llegas a los 18😡`);
 });
 
 app.listen(PORT);
