@@ -2,33 +2,18 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 
-//Obtenemos un Texto
-app.get("/", (req, res) => {
-  res.send("Hello world");
-});
+//Esta linea de codigo es para que express entienda los tipos de datos
+//Es importante colocar esta linea de codigo antes de colocar los Routing
+//Ya que express pasa por estas funciones para poder interpretarlos 
 
-//Obtenemos un archivo
-app.get("/myarchivo", (req, res) => {
-  res.sendFile("./java.png", {
-    root: __dirname,
-  });
-});
+app.use(express.text()) //Entiende el tipo de dato TEXT que le enviamos en el request
+app.use(express.json()) //Entiende los objetivos JSON que le enviamos en los request
+app.use(express.urlencoded({extended: false})) //Para entender el codigo de un formulario (Form-Encode) HTML
 
-//Obtener un dato de manera con un Objeto JSON
-app.get("/user", (req, res) => {
-  res.json({
-    name: "fazt",
-    lastName: "Digruttola",
-    age: 40,
-    points: [3, 4, 21],
-  });
+app.post('/user', (req,res) => {
+  console.log(req.body);
+  res.send("Nuevo usuario creado")
 });
-
-//isAlive se usa generalmenta para saber si el servidor esta funcionando
-app.get('/isAlive', (req,res) => {
-    //204 -> no muestra ningun contenido para mostrar que se obtuvo con exito
-    res.sendStatus(204);
-})
 
 app.listen(PORT);
 console.log(`Server on port ${PORT}`);
