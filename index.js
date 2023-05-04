@@ -1,21 +1,28 @@
 const express = require("express");
+const morgan = require("morgan");
+
 const app = express();
 const PORT = 3000;
 
-
-app.get('/search', (req,res) => {
-  if (req.query.q === 'java') {
-    return res.send('Lista de libros de java')
-  }
-
-  res.send('Pagina normal');
+app.get('/profile' , (req,res) => {
+  res.send('Page profile');
 });
-//Cuando el query se repite , express crea un objeto del nombre correspondiente y los datos en un array
-//Un ejemplo de esto es que si ponemos /search?user=ivan&user=digruttola
-//Express nos devuelve un objetivo JSON con los siguientes datos
-/*
-{user: ['ivan','digruttola']}
-*/
+
+//middlewares 
+app.use(morgan());
+
+//middlewares
+app.use( (req,res,next) => {
+  if (req.query.login === "digruttola") 
+    return next();
+  
+    res.send('No Autorizado');
+});
+
+app.get('/dashboard' , (req,res) => {
+  res.send('Dashboard')
+} );
+
 
 app.listen(PORT);
 console.log(`Server on port ${PORT}`);

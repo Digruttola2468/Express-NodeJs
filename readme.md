@@ -210,4 +210,108 @@ Cuando el query se repite , express crea un objeto del nombre correspondiente y 
 
 Un ejemplo de esto es que si ponemos `/search?user=ivan&user=digruttola` Express nos devuelve un objetivo JSON con los siguientes datos: `{user: ['ivan','digruttola']}`
 
-##
+## Middlewares
+
+El **middlewares** es una parte del codigo donde se ejecuta primero un bloque de codigo y luego nos dirije a la ruta `/about` por ejemplo.
+
+Se usa mucho para verificar la identidad de la persona antes de cargar la ruta especificada , ya sea que si queremos ir a la ruta `/dashboard` donde tenemos datos exclusivos para pocas personas autenticadas , con el middlewares nos ayuda a procesar la peticion y verificar si la persona esta authenticada.
+
+Cada middlewares tiene su propia funcion
+
+```JS
+//middlewares 
+app.use( (req, res,next) => {
+  console.log(`Route: ${req.url} `, `Metodo: ${req.method}`);
+  next();
+});
+
+//middlewares
+app.use( (req,res,next) => {
+  if (req.query.login === "digruttola") 
+    return next();
+  
+    res.send('No Autorizado');
+});
+
+app.get('/dashboard' , (req,res) => {
+  res.send('Dashboard')
+} );
+
+app.get('/profile' , (req,res) => {
+  res.send('Page profile');
+});
+```
+
+El problema de este codigo es que si queremos visitar la pagina `/profile` tenemos que enviarle la authenticacion , pero si la pagina no necesita authenticacion , como podemos visitar la pagina sin realizar el query de authenticacion?? 
+
+Bueno la soluncion esta en el orden que coloquemos las funciones , en todo caso la funcion `app.get('/profile', (req,res) => {})` estaria arriba de los middlewares
+
+```JS
+
+app.get('/profile' , (req,res) => {
+  res.send('Page profile');
+});
+
+//middlewares 
+app.use( (req, res,next) => {
+  console.log(`Route: ${req.url} `, `Metodo: ${req.method}`);
+  next();
+});
+
+//middlewares
+app.use( (req,res,next) => {
+  if (req.query.login === "digruttola") 
+    return next();
+  
+    res.send('No Autorizado');
+});
+
+app.get('/dashboard' , (req,res) => {
+  res.send('Dashboard')
+} );
+```
+
+## Middleware interceptor
+
+Existen muchos tipos de middleware , ya sea para authenicar , interpretar formatos JSON o Textos , para mostrar informacion sobre la peticion , etc.
+
+Estos middleware lo podemos instalar en nuestro proyecto para facilitar la tarea. Son basicamente librerias que nos provee codigo ya realizado por otro programador.
+
+Un ejemplo de una libreria de middleware es [Morgan](https://npmjs.com/package/morgan) para instalarlo hay que colocar en consola del sistema `npm i morgan`
+
+```JS
+const express = require("express");
+const morgan = require("morgan");
+
+const app = express();
+const PORT = 3000;
+
+app.get('/profile' , (req,res) => {
+  res.send('Page profile');
+});
+
+//middlewares 
+app.use(morgan());
+
+//middlewares
+app.use( (req,res,next) => {
+  if (req.query.login === "digruttola") 
+    return next();
+  
+    res.send('No Autorizado');
+});
+
+app.get('/dashboard' , (req,res) => {
+  res.send('Dashboard')
+} );
+
+
+app.listen(PORT);
+console.log(`Server on port ${PORT}`);
+```
+
+Donde esta funcion `app.use(morgan())` nos devuelve lo siguiente 
+
+```
+::1 - - [Thu, 04 May 2023 22:06:29 GMT] "GET /favicon.ico HTTP/1.1" 304 - "http://localhost:3000/dashboard?login=iva" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+```
