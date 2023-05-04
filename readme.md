@@ -315,3 +315,14 @@ Donde esta funcion `app.use(morgan())` nos devuelve lo siguiente
 ```
 ::1 - - [Thu, 04 May 2023 22:06:29 GMT] "GET /favicon.ico HTTP/1.1" 304 - "http://localhost:3000/dashboard?login=iva" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 ```
+
+## REST API
+
+Es un servidor que posee URL para procesar datos.
+
+Donde el **API (Application programing interface)** es la comunicacion entre el cliente y el servidor , donde el servidor se encarga de obtener los datos de una base de datos y se lo muestra al cliente.
+
+Por otro lado **REST** viene de la parte de las peticiones que les podemos hacer al servidor ya sea `GET /products` `GET /products/:id` `POST /products/:id` `DELETE /products/:id`.
+
+
+
