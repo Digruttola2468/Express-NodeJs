@@ -324,5 +324,5 @@ Donde el **API (Application programing interface)** es la comunicacion entre el 
 
 Por otro lado **REST** viene de la parte de las peticiones que les podemos hacer al servidor ya sea `GET /products` `GET /products/:id` `POST /products/:id` `DELETE /products/:id`.
 
-
+## REST API CRUD
 

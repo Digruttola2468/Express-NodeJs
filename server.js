@@ -1,0 +1,57 @@
+const express = require('express')
+const morgan = require('morgan')
+
+const app = express();
+const PORT = 3000;
+
+const products = [ 
+    {
+        id: 1,
+        name: "Laptop",
+        price: 2000
+    } 
+];
+
+app.use(morgan('dev'))
+app.use(express.json())
+
+app.get('/products' , (req,res) => {
+    res.json(products);
+})
+
+app.post('/products' , (req,res) => {
+    products.push({...req.body, id: products.length + 1});
+    res.send("Creando productos");
+})
+
+app.put('/products/:id' , (req,res) => {
+    const newData = req.body;
+
+    const productoFind = products.find((product) => parseInt(req.params.id) === product.id)
+    if(!productoFind) return res.status(404).json({message: "Not Found product"})
+    
+    products = products.map( p => p.id === parseInt(req.params.id) ? {...p, ...newData} : p);
+
+    res.json({message: "Product updated success"})
+})
+
+app.delete('/products/:id' , (req,res) => {
+    const productoFind = products.find((product) => parseInt(req.params.id) === product.id)
+    if(!productoFind) return res.status(404).json({message: "Not Found product"})
+
+    products = products.filter( p => p.id !== parseInt(req.params.id) );
+
+    res.status(200).send(products)
+})
+
+app.get('/products/:id' , (req,res) => {
+    console.log(req.params.id);
+    const producto = products.find((product) => parseInt(req.params.id) === product.id)
+    
+    if(!producto) return res.status(404).json({message: "Not Found product"})
+
+    res.json(producto);
+})
+
+app.listen(PORT);
+console.log(`Server on PORT: ${PORT}`);
