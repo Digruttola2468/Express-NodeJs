@@ -1,28 +1,18 @@
 const express = require("express");
 const morgan = require("morgan");
 
+const HomeRoute = require('./routes/home');
+const UserRoute = require('./routes/users');
+
 const app = express();
 const PORT = 3000;
 
-app.get('/profile' , (req,res) => {
-  res.send('Page profile');
-});
-
 //middlewares 
-app.use(morgan());
+app.use(morgan('dev'));
+app.use(express.json());
 
-//middlewares
-app.use( (req,res,next) => {
-  if (req.query.login === "digruttola") 
-    return next();
-  
-    res.send('No Autorizado');
-});
-
-app.get('/dashboard' , (req,res) => {
-  res.send('Dashboard')
-} );
-
+app.use(HomeRoute);
+app.use(UserRoute);
 
 app.listen(PORT);
 console.log(`Server on port ${PORT}`);

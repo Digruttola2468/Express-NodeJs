@@ -361,3 +361,108 @@ app.use('/public',express.static('./public'))
 Estos middleware se coloca al final del codigo , ya que si no existe una ruta /public por parte del `app.get()` , se abre la pagina publica
 
 ## Express Router 
+
+Con express podemos crear varios archivos y al final unirlos todos en una sola aplicacion
+
+Para eso , creamos una carpeta `./routes` para agregar todas las rutas , donde colocamos los archivos con sus respectiva ruta , quedaria de la siguiente manera
+
+**home.js**
+```JS
+function homeRoute(app) {
+  app.all("/about", (req, res) => {
+    res.send("about page");
+  });
+
+  app.get("/dashboard", (req, res) => {
+    res.send("Dashboard Page");
+  });
+}
+//Exportamos la funcion
+module.exports = homeRoute;
+```
+
+**users.js**
+```JS
+function usersRouter(app) {
+  app.get("/Username", (req, res) => {
+    res.send("Username route");
+  });
+
+  app.post("/profile", (req, res) => {
+    console.log(req.body);
+    res.send("profile page");
+  });
+}
+//Exportamos la funcion
+module.exports = usersRouter;
+```
+
+**index.js**
+```JS
+const express = require("express");
+
+//Importamos las funciones
+const HomeRoute = require('./routes/home');
+const UserRoute = require('./routes/users');
+
+const app = express();
+const PORT = 3000;
+
+//Le enviamos como parametro app 
+HomeRoute(app);
+UserRoute(app);
+
+app.listen(PORT);
+console.log(`Server on port ${PORT}`);
+```
+
+Pero en Express existe una mejor manera de realizar esta operacion con router que seria de la siguiente manera 
+
+**home.js**
+```JS
+const express = require('express');
+const router = express.Router();
+
+router.all("/about", (req, res) => {
+  res.send("about page");
+});
+
+router.get("/dashboard", (req, res) => {
+  res.send("Dashboard Page");
+});
+
+module.exports = router;
+```
+
+**users.js**
+```JS
+const express = require('express');
+const router = express.Router()
+
+router.get("/Username", (req, res) => {
+  res.send("Username route");
+});
+
+router.post("/profile", (req, res) => {
+  console.log(req.body);
+  res.send("profile page");
+});
+
+module.exports = router;
+```
+
+**index.js**
+```JS
+const express = require("express");
+
+const HomeRoute = require('./routes/home');
+const UserRoute = require('./routes/users');
+
+const app = express();
+const PORT = 3000;
+
+app.use(HomeRoute);
+app.use(UserRoute);
+
+app.listen(PORT);
+```
