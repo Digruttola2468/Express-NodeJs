@@ -4,6 +4,14 @@ const morgan = require('morgan')
 const app = express();
 const PORT = 3000;
 
+//Settings
+//Sirve para tener todo en un solo lugar la configuracion de la aplicacion
+app.set('appName', 'Express Course')
+app.set('Port', 3000);
+
+console.log(app.get('appName'));
+console.log(app.get('Port'));
+
 const products = [ 
     {
         id: 1,

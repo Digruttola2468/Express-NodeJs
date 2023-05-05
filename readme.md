@@ -324,5 +324,18 @@ Donde el **API (Application programing interface)** es la comunicacion entre el 
 
 Por otro lado **REST** viene de la parte de las peticiones que les podemos hacer al servidor ya sea `GET /products` `GET /products/:id` `POST /products/:id` `DELETE /products/:id`.
 
-## REST API CRUD
+## Setting Express
 
+En express usamos los setting para guardar variables y configuraciones especificas de nuestro programa en un solo lugar 
+
+```JS
+//Settings
+//Sirve para tener todo en un solo lugar la configuracion de la aplicacion
+app.set('appName', 'Express Course')
+app.set('Port', 3000);
+
+console.log(app.get('appName'));
+console.log(app.get('Port'));
+```
+
+Donde es importante colocar los setting al inicio de la aplicacion
