@@ -23,6 +23,15 @@ const products = [
 app.use(morgan('dev'))
 app.use(express.json())
 
+//app.use(express.static('./public'))
+
+app.get('/saludo', (req,res) => {
+    res.send('Saludar')
+})
+
+//Este middleware se coloca al final del codigo , ya que si no existe una ruta /public , se abre esta
+app.use('/public',express.static('./public'))
+
 app.get('/products' , (req,res) => {
     res.json(products);
 })

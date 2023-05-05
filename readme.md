@@ -339,3 +339,25 @@ console.log(app.get('Port'));
 ```
 
 Donde es importante colocar los setting al inicio de la aplicacion
+
+## Static Files
+
+Antes usabamos `res.sendFile()` para que la respuesta de la peticion del cliente sea una un archivo , ya sea `.html` o una imagen `.png`
+
+Ahora con el metodo `app.use(express.static('./public'))` estamos estableciendo como carpeta publica a la carpeta `./public` (se puede colocar cualquier nombre de carpeta) de nuestro proyecto, donde se almacenara todo los archivos de la pagina `html css js`
+
+Pero esto trae un pequeño problema ya que si queremos que una ruta especifica muestre la pagina unica para esa ruta , se coloca de la siguiente manera `app.use('/public',express.static('./public'))` donde accediendo a la ruta `./public` podemos mostrar los archivos de la carpeta `./public` de nuestro proyecto
+
+```JS
+//app.use(express.static('./public'))
+
+app.get('/saludo', (req,res) => {
+    res.send('Saludar')
+})
+
+app.use('/public',express.static('./public'))
+```
+
+Estos middleware se coloca al final del codigo , ya que si no existe una ruta /public por parte del `app.get()` , se abre la pagina publica
+
+## Express Router 
